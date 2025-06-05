@@ -47,7 +47,7 @@ CString CalcLogic::AppendOperator(const CString& currentExpression, const CStrin
 		return newExpr;
 	}
 	else {
-		bLastInputWasOperator = true;
+		bLastInputWasOperator = true;	
 		return currentExpression + oper;
 	}
 }
@@ -147,7 +147,7 @@ CString EvaluatePostfix(const std::vector<CString>& tokens, bool& bError)
 			}
 
 			double b = stack.top(); stack.pop();
-			double a = stack.top(); stack.pop();
+			double a = stack.top(); stack.pop();	
 			double result = 0;
 
 			switch (tok[0]) {
@@ -179,10 +179,9 @@ CString EvaluatePostfix(const std::vector<CString>& tokens, bool& bError)
 	return resultStr;
 }
 
-//계산
+//실 계산
 CString CalcLogic::Calculate(const CString& expr, bool& bError) {
 	bError = false;
 	std::vector<CString> postfix = InfixToPostfix(expr);
 	return EvaluatePostfix(postfix, bError);
 }
-
