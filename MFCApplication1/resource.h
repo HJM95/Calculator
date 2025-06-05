@@ -3,7 +3,8 @@
 // MFCApplication1.rc에서 사용되고 있습니다.
 //
 #define IDOK2                           4
-#define IDC_CALCULATOR                  4
+#define IDC_CLOSE_PARENTHESIS           4
+#define IDC_BUTTON_RPAREN               4
 #define IDOK3                           6
 #define IDD_BUTTON_CLEAR                7
 #define IDC_BUTTON_CLEAR                7
@@ -48,7 +49,7 @@
 #define IDC_DISPLAY_TOP                 1000
 #define IDC_DISPLAY_BOTTOM              1001
 #define IDD_BUTTON_PERCENT              1002
-#define IDC_BUTTON_PERCENT              1002
+#define IDC_BUTTON_LPAREN               1002
 
 // Next default values for new objects
 // 

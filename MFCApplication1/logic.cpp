@@ -52,15 +52,6 @@ CString CalcLogic::AppendOperator(const CString& currentExpression, const CStrin
 	}
 }
 
-// ----- Expression Parsing Utilities -----
-
-int GetPrecedence(TCHAR op)
-{
-	if (op == '+' || op == '-') return 1;
-	if (op == '*' || op == '/') return 2;
-	return 0;
-}
-
 double ApplyOp(double a, double b, TCHAR op, bool& bError)
 {
 	switch (op) {
@@ -79,70 +70,119 @@ double ApplyOp(double a, double b, TCHAR op, bool& bError)
 	}
 }
 
-CString CalcLogic::Calculate(const CString& expression, bool& bError)
+//연산자 우선순위, 피연산자 판단
+int GetPrecedence(TCHAR op) {
+	if (op == _T('+') || op == _T('-')) return 1;
+	if (op == _T('*') || op == _T('/')) return 2;
+	return 0;
+}
+
+bool IsOperator(TCHAR ch) {
+	return ch == _T('+') || ch == _T('-') || ch == _T('*') || ch == _T('/');
+}
+
+// 중위 -> 후위 
+std::vector<CString> InfixToPostfix(const CString& expr)
 {
-	bError = false;
-
-	std::stack<double> values;
-	std::stack<TCHAR> ops;
+	std::vector<CString> output;
+	std::stack<TCHAR> opStack;
 	CString token;
-	double num;
 
-	for (int i = 0; i < expression.GetLength(); ++i)
+	for (int i = 0; i < expr.GetLength(); ++i)
 	{
-		TCHAR ch = expression[i];
+		TCHAR ch = expr[i];
 
-		if (isdigit(ch) || ch == '.')
-		{
+		if (_istdigit(ch) || ch == _T('.')) {
 			token += ch;
-		}
-		else if (ch == '+' || ch == '-' || ch == '*' || ch == '/')
-		{
-			if (!token.IsEmpty())
-			{
-				num = _tstof(token);
-				values.push(num);
+		} else {
+			if (!token.IsEmpty()) {
+				output.push_back(token);
 				token.Empty();
 			}
 
-			while (!ops.empty() && GetPrecedence(ops.top()) >= GetPrecedence(ch))
-			{
-				double b = values.top(); values.pop();
-				double a = values.top(); values.pop();
-				TCHAR op = ops.top(); ops.pop();
-				values.push(ApplyOp(a, b, op, bError));
-				if (bError) return _T("ERROR");
+			if (ch == _T('(')) {
+				opStack.push(ch);
+			} else if (ch == _T(')')) {
+				while (!opStack.empty() && opStack.top() != _T('(')) {
+					output.push_back(CString(opStack.top()));
+					opStack.pop();
+				}
+				if (!opStack.empty() && opStack.top() == _T('(')) {
+					opStack.pop(); // '(' 제거
+				}
+			} else if (IsOperator(ch)) {
+				while (!opStack.empty() &&
+					GetPrecedence(opStack.top()) >= GetPrecedence(ch)) {
+						output.push_back(CString(opStack.top()));
+						opStack.pop();
+				}
+				opStack.push(ch);
 			}
-
-			ops.push(ch);
-		}
-		else {
-			bError = true;
-			return _T("ERROR");
 		}
 	}
 
 	if (!token.IsEmpty()) {
-		values.push(_tstof(token));
+		output.push_back(token);
 	}
 
-	while (!ops.empty())
-	{
-		if (values.size() < 2) { bError = true; return _T("ERROR"); }
-
-		double b = values.top(); values.pop();
-		double a = values.top(); values.pop();
-		TCHAR op = ops.top(); ops.pop();
-		values.push(ApplyOp(a, b, op, bError));
-		if (bError) return _T("ERROR");
+	while (!opStack.empty()) {
+		output.push_back(CString(opStack.top()));
+		opStack.pop();
 	}
 
-	if (values.size() != 1) {
-		bError = true;
-		return _T("ERROR");
-	}
-
-	CString strResult;
-	strResult.Format(_T("%.10g"), values.top());
-	return strResult;
+	return output;
 }
+
+// 후위 계산
+CString EvaluatePostfix(const std::vector<CString>& tokens, bool& bError)
+{
+	std::stack<double> stack;
+
+	for (const CString& tok : tokens)
+	{
+		if (IsOperator(tok[0]) && tok.GetLength() == 1) {
+			if (stack.size() < 2) {
+				bError = true;
+				return _T("");
+			}
+
+			double b = stack.top(); stack.pop();
+			double a = stack.top(); stack.pop();
+			double result = 0;
+
+			switch (tok[0]) {
+			case _T('+'): result = a + b; break;
+			case _T('-'): result = a - b; break;
+			case _T('*'): result = a * b; break;
+			case _T('/'):
+				if (b == 0) {
+					bError = true;
+					return _T("");
+				}
+				result = a / b; break;
+			}
+			stack.push(result);
+		}
+		else {
+			double val = _tstof(tok);
+			stack.push(val);
+		}
+	}
+
+	if (stack.size() != 1) {
+		bError = true;
+		return _T("");
+	}
+
+	CString resultStr;
+	resultStr.Format(_T("%.12g"), stack.top());
+	return resultStr;
+}
+
+//계산
+CString CalcLogic::Calculate(const CString& expr, bool& bError) {
+	bError = false;
+	std::vector<CString> postfix = InfixToPostfix(expr);
+	return EvaluatePostfix(postfix, bError);
+}
+

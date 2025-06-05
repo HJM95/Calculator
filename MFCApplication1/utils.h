@@ -4,4 +4,5 @@
 namespace CalcUtils
 {
 	CString FormatNumberWithComma(const CString& strNumber);
+	bool IsParenthesesBalanced(const CString& expr);
 }

@@ -46,12 +46,16 @@ BEGIN_MESSAGE_MAP(CalculatorDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON_EQUAL, &CalculatorDlg::OnEqualButtonClicked)
 	ON_BN_CLICKED(IDC_BUTTON_CLEAR, &CalculatorDlg::OnClearButtonClicked)
 	ON_BN_CLICKED(IDC_BUTTON_DELETE, &CalculatorDlg::OnDeleteButtonClicked)
+	ON_BN_CLICKED(IDC_BUTTON_LPAREN, &CalculatorDlg::OnParenButtonClicked)
+	ON_BN_CLICKED(IDC_BUTTON_RPAREN, &CalculatorDlg::OnParenButtonClicked)
 END_MESSAGE_MAP()
 
 BOOL CalculatorDlg::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
 	Style::InitStyles(this);
+
+	SetWindowText(_T("계산기"));
 
 	CStatic* pDisplayTop = (CStatic*)GetDlgItem(IDC_DISPLAY_TOP);
 	if (pDisplayTop) {
@@ -114,7 +118,7 @@ void CalculatorDlg::OnNumberButtonClicked()
 	m_csCurrent += digit;
 	UpdateDisplayWithComma(m_csCurrent);
 
-	m_bLastInputWasOperator = false;
+	m_bLastInputWasOperator = false; 
 }
 
 
@@ -175,6 +179,13 @@ void CalculatorDlg::OnEqualButtonClicked()
 			m_csExpression.Delete(m_csExpression.GetLength() - 1, 1);
 	}
 
+	// 괄호 짝 검사 추가
+	if (!CalcUtils::IsParenthesesBalanced(m_csExpression)) {
+		m_displayBottom.SetWindowText(_T("ERROR"));
+		m_displayTop.SetWindowText(_T("괄호 오류"));
+		return;
+	}
+
 	bool bError = false;
 	m_csResult = CalcLogic::Calculate(m_csExpression, bError);
 
@@ -194,8 +205,6 @@ void CalculatorDlg::OnEqualButtonClicked()
 	m_bDecimalUsed = false;
 }
 
-
-
 void CalculatorDlg::OnDeleteButtonClicked()
 {
 	m_csCurrent = CalcLogic::Backspace(m_csCurrent, m_bDecimalUsed, m_bLastInputWasOperator);
@@ -206,4 +215,39 @@ void CalculatorDlg::UpdateDisplayWithComma(const CString& strNumber)
 {
 	CString formatted = CalcUtils::FormatNumberWithComma(strNumber);
 	m_displayTop.SetWindowText(formatted);
+}
+
+void CalculatorDlg::OnParenButtonClicked(){
+	UINT nID = (UINT)GetCurrentMessage()->wParam;
+	CString paren;
+
+	switch (nID)
+	{
+	case IDC_BUTTON_LPAREN:
+		paren = _T("(");
+		break;
+	case IDC_BUTTON_RPAREN:
+		paren = _T(")");
+		break;
+	default:
+		return;
+	}
+
+	// 계산 완료 후 괄호 입력 시 초기화
+	if (m_bCalculated) {
+		m_csExpression.Empty();
+		m_csCurrent.Empty();
+		m_bCalculated = false;
+	}
+
+	// 현재 숫자가 입력 중이면 괄호 추가 전 수식에 반영
+	if (!m_csCurrent.IsEmpty()) {
+		m_csExpression += m_csCurrent;
+		m_csCurrent.Empty();
+	}
+
+	m_csExpression += paren;
+
+	m_displayTop.SetWindowText(m_csExpression);
+	m_displayBottom.SetWindowText(_T("0"));
 }

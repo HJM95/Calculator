@@ -25,6 +25,7 @@ protected:
 	void OnEqualButtonClicked();
 	void OnClearButtonClicked();
 	void OnDeleteButtonClicked();
+	void OnParenButtonClicked();
 
 	DECLARE_MESSAGE_MAP()
 

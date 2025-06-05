@@ -28,3 +28,24 @@ CString CalcUtils::FormatNumberWithComma(const CString& strNumber)
 	return strFormatted;
 }
 
+////////////////////////////////////////////////////
+//°ýÈ£ À¯È¿¼º °Ë»ç
+////////////////////////////////////////////////////
+
+bool CalcUtils::IsParenthesesBalanced(const CString& expr)
+{
+	int balance = 0;
+
+	for (int i = 0; i < expr.GetLength(); ++i)
+	{
+		TCHAR ch = expr[i];
+		if (ch == '(') {
+			balance++;
+		} else if (ch == ')') {
+			balance--;
+			if (balance < 0) return false; // ´Ý´Â °ýÈ£°¡ ¸ÕÀú ³ª¿È
+		}
+	}
+
+	return balance == 0; // ¿©´Â °ýÈ£¿Í ´Ý´Â °ýÈ£ ¼ö°¡ °°¾Æ¾ß ÇÔ
+}
