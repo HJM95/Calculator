@@ -1,10 +1,7 @@
 #include "stdafx.h"
 #include "Utils.h"
 
-////////////////////////////////////////////////////
-//ÄÞ¸¶ Âï¾îÁÖ´Â ÇÔ¼ö
-////////////////////////////////////////////////////
-
+//ÄÞ¸¶ Âï¾îÁÖ±â
 CString CalcUtils::FormatNumberWithComma(const CString& strNumber)
 {
 	CString strFormatted;
@@ -28,10 +25,7 @@ CString CalcUtils::FormatNumberWithComma(const CString& strNumber)
 	return strFormatted;
 }
 
-////////////////////////////////////////////////////
 //°ýÈ£ À¯È¿¼º °Ë»ç
-////////////////////////////////////////////////////
-
 bool CalcUtils::IsParenthesesBalanced(const CString& expr)
 {
 	int balance = 0;

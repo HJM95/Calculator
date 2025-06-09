@@ -11,18 +11,18 @@ namespace Style
 	{
 		LOGFONT lf = { 0 };
 
-		// 1) IDC_DISPLAY_TOP 폰트 (은은한 회색, 보통 크기)
+		// 1) IDC_DISPLAY_TOP 폰트
 		lf.lfHeight = 24;          // 적당한 크기, 필요에 따라 조정
 		lf.lfWeight = FW_NORMAL;   // 보통 굵기
 		_tcscpy_s(lf.lfFaceName, _T("굴림"));
 		g_DisplayTopFont.CreateFontIndirect(&lf);
 
-		// 2) IDC_DISPLAY_BOTTOM 폰트 (더 큰 크기, 굵음)
+		// 2) IDC_DISPLAY_BOTTOM 폰트
 		lf.lfHeight = 36;          // DISPLAY_TOP보다 크다
 		lf.lfWeight = FW_BOLD;     // 굵은 글씨
 		g_DisplayBottomFont.CreateFontIndirect(&lf);
 
-		// 3) 0~9 버튼용 폰트 (적당한 크기에 굵음)
+		// 3) 0~9 버튼용 폰트
 		lf.lfHeight = 20;          // 적당한 크기
 		lf.lfWeight = FW_BOLD;     // 볼드 처리
 		g_ButtonFont.CreateFontIndirect(&lf);

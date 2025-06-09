@@ -1,0 +1,35 @@
+﻿빌드 시작: 2025-06-09 오전 9:21:00
+     1>2 노드의 "C:\Users\USER-PC\documents\visual studio 2012\Projects\MFCApplication1\MFCApplication1\MFCApplication1.vcxproj" 프로젝트(Build 대상)입니다.
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /Zi /nologo /W3 /WX- /sdl /O2 /Oi /Oy- /GL /D WIN32 /D _WINDOWS /D NDEBUG /D _UNICODE /D UNICODE /D _AFXDLL /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Yc"stdafx.h" /Fp"Release\MFCApplication1.pch" /Fo"Release\\" /Fd"Release\vc110.pdb" /Gd /TP /analyze- /errorReport:prompt stdafx.cpp
+         stdafx.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /Zi /nologo /W3 /WX- /sdl /O2 /Oi /Oy- /GL /D WIN32 /D _WINDOWS /D NDEBUG /D _UNICODE /D UNICODE /D _AFXDLL /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Yu"stdafx.h" /Fp"Release\MFCApplication1.pch" /Fo"Release\\" /Fd"Release\vc110.pdb" /Gd /TP /analyze- /errorReport:prompt CalculatorDlg.cpp logic.cpp MainFrm.cpp MFCApplication1.cpp MFCApplication1Doc.cpp MFCApplication1View.cpp style.cpp utils.cpp
+         CalculatorDlg.cpp
+         logic.cpp
+         MainFrm.cpp
+         MFCApplication1.cpp
+         MFCApplication1Doc.cpp
+         MFCApplication1View.cpp
+         style.cpp
+         utils.cpp
+       ResourceCompile:
+         C:\Program Files (x86)\Windows Kits\8.0\bin\x86\rc.exe /D NDEBUG /D _UNICODE /D UNICODE /D _AFXDLL /l"0x0412" /IRelease\ /nologo /fo"Release\MFCApplication1.res" MFCApplication1.rc 
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\USER-PC\documents\visual studio 2012\Projects\MFCApplication1\Release\MFCApplication1.exe" /INCREMENTAL:NO /NOLOGO /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /manifestinput:"C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\Include\Manifest\dpiaware.manifest" /DEBUG /PDB:"C:\Users\USER-PC\documents\visual studio 2012\Projects\MFCApplication1\Release\MFCApplication1.pdb" /SUBSYSTEM:WINDOWS /OPT:REF /OPT:ICF /LTCG /TLBID:1 /ENTRY:"wWinMainCRTStartup" /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\USER-PC\documents\visual studio 2012\Projects\MFCApplication1\Release\MFCApplication1.lib" /MACHINE:X86 /SAFESEH Release\MFCApplication1.res
+         Release\CalculatorDlg.obj
+         Release\logic.obj
+         Release\MainFrm.obj
+         Release\MFCApplication1.obj
+         Release\MFCApplication1Doc.obj
+         Release\MFCApplication1View.obj
+         Release\stdafx.obj
+         Release\style.obj
+         Release\utils.obj
+         코드를 생성하고 있습니다.
+         코드를 생성했습니다.
+         MFCApplication1.vcxproj -> C:\Users\USER-PC\documents\visual studio 2012\Projects\MFCApplication1\Release\MFCApplication1.exe
+     1>"C:\Users\USER-PC\documents\visual studio 2012\Projects\MFCApplication1\MFCApplication1\MFCApplication1.vcxproj" 프로젝트를 빌드했습니다(Build 대상).
+
+빌드했습니다.
+
+경과 시간: 00:00:02.93

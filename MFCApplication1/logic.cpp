@@ -6,6 +6,8 @@
 #include <sstream>
 #include <cmath>
 
+
+//maxDigits 값 초과시 
 CString CalcLogic::AppendDigit(const CString& current, const CString& digit, int maxDigits, bool& bOverflowed)
 {
 	CString raw = current;
@@ -20,6 +22,7 @@ CString CalcLogic::AppendDigit(const CString& current, const CString& digit, int
 	return current + digit;
 }
 
+//DELETE 버튼 지우기 연산
 CString CalcLogic::Backspace(const CString& current, bool& bDecimalUsed, bool& bLastInputWasOperator)
 {
 	if (current.IsEmpty())
@@ -36,6 +39,7 @@ CString CalcLogic::Backspace(const CString& current, bool& bDecimalUsed, bool& b
 	return newStr;
 }
 
+//이전 입력값이 연산자인 경우 = 삭제, 아닌 경우 = 추가
 CString CalcLogic::AppendOperator(const CString& currentExpression, const CString& oper, bool& bLastInputWasOperator)
 {
 	if (currentExpression.IsEmpty())
@@ -84,14 +88,15 @@ bool IsOperator(TCHAR ch) {
 // 중위 -> 후위 
 std::vector<CString> InfixToPostfix(const CString& expr)
 {
-	std::vector<CString> output;
-	std::stack<TCHAR> opStack;
-	CString token;
+	std::vector<CString> output; //리턴할 최종 후위값
+	std::stack<TCHAR> opStack; //연산자&괄호 처리를 위한 스택
+	CString token; //숫자 누적 임시 변수	
 
 	for (int i = 0; i < expr.GetLength(); ++i)
 	{
 		TCHAR ch = expr[i];
 
+		//숫자가 아닌 문자를 만날때까지 token값 추가
 		if (_istdigit(ch) || ch == _T('.')) {
 			token += ch;
 		} else {
@@ -100,9 +105,10 @@ std::vector<CString> InfixToPostfix(const CString& expr)
 				token.Empty();
 			}
 
+			//'(' 괄호는 무조건 스택에 push
 			if (ch == _T('(')) {
 				opStack.push(ch);
-			} else if (ch == _T(')')) {
+			} /* 스택에서 '('가 나올때까지 pop, output에 연산자 추가, '('를 만나면 pop만하고 추가 x */else if (ch == _T(')')) {
 				while (!opStack.empty() && opStack.top() != _T('(')) {
 					output.push_back(CString(opStack.top()));
 					opStack.pop();
@@ -121,15 +127,19 @@ std::vector<CString> InfixToPostfix(const CString& expr)
 		}
 	}
 
+	//수식 끝에 도달했을때 남아 있는 숫자 token이 있으면 결과에 추가
 	if (!token.IsEmpty()) {
 		output.push_back(token);
 	}
 
+	//스택에 남은 연산자들 모두 output에 추가
+	//이 시점에서 괄호 연산 없어야 함
 	while (!opStack.empty()) {
 		output.push_back(CString(opStack.top()));
 		opStack.pop();
 	}
 
+	//최종 후위표기식(벡터) 반환
 	return output;
 }
 

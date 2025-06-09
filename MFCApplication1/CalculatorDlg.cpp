@@ -50,6 +50,8 @@ BEGIN_MESSAGE_MAP(CalculatorDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON_RPAREN, &CalculatorDlg::OnParenButtonClicked)
 END_MESSAGE_MAP()
 
+
+//다이얼로그 초기화&호출
 BOOL CalculatorDlg::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
@@ -57,6 +59,7 @@ BOOL CalculatorDlg::OnInitDialog()
 
 	SetWindowText(_T("계산기"));
 
+	//GetDlgItem -> 컨트롤 찾는 함수
 	CStatic* pDisplayTop = (CStatic*)GetDlgItem(IDC_DISPLAY_TOP);
 	if (pDisplayTop) {
 		pDisplayTop->SetFont(&Style::g_DisplayTopFont);
@@ -116,8 +119,11 @@ void CalculatorDlg::OnNumberButtonClicked()
 
 	// 숫자 붙이기
 	m_csCurrent += digit;
+
+	//화면 업데이트
 	UpdateDisplayWithComma(m_csCurrent);
 
+	//마지막 입력값 체크(연산자, 숫자)
 	m_bLastInputWasOperator = false; 
 }
 
@@ -158,9 +164,13 @@ void CalculatorDlg::OnOperatorButtonClicked()
 	m_csExpression += oper;
 
 	m_displayTop.SetWindowText(m_csExpression);
-	m_displayBottom.SetWindowText(_T("0"));
+	//m_displayBottom.SetWindowText(_T("0"));
 
+
+	//마지막 입력값 연산자 체크
 	m_bLastInputWasOperator = true;
+
+	//마지막 입력값 소수점 체크
 	m_bDecimalUsed = false;
 }
 
@@ -249,5 +259,5 @@ void CalculatorDlg::OnParenButtonClicked(){
 	m_csExpression += paren;
 
 	m_displayTop.SetWindowText(m_csExpression);
-	m_displayBottom.SetWindowText(_T("0"));
+	//m_displayBottom.SetWindowText(_T("0"));
 }
